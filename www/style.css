@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    /* border: 1px solid red; */
+}
+
+.page {
+    width: 99vw;
+    height: 99vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.container {
+    min-height: 500px;
+    width: 500px;
+    max-width: 500px;
+    border-radius: 67px;
+    border: 5px solid #56697d;
+
+    background-color: #000000;
+    color: #f6f6f6;
+    box-shadow: 5px 5px 30px black;
+
+    /* visibility: hidden; */
+}
+
+.top-bar{
+    height: 60px;
+    margin-top: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    font-size: 14px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 300;
+}
+
+.top-bar__wifi {
+    margin: 0 8px 0;
+}
+
+.top-bar__timer{
+    margin-left: 68px;
+}
+
+.top-bar__right-side {
+    margin-right: 45px;
+
+    display: flex;
+}
+
+.displayer {
+    height: 300px;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    
+    font-size: 48px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+}
+
+.displayer__math{
+    margin: 0 40px 0;
+    padding: 0 5px 0 0;
+
+    color: grey;
+    font-size: 24px;
+}
+
+.displayer__result {
+    margin: 0 60px 0;
+    padding: 0 10px 10px 0;
+
+    font-size: 60px;
+}
+
+.keyboard {
+    height: 500px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 40px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+}
+
+.keyboard__button {
+    width: 86px;
+    height: 86px;
+    margin: 8px;
+    border-radius: 86px;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.keyboard__button:hover {
+    cursor: pointer;
+}
+
+.keyboard__button:active {
+    transition: 0.001s;
+}
+
+.keyboard__button--calc-options {
+    background-color: #9f9f9f;
+    color: #0d0d0d;
+}
+
+.keyboard__button--calc-options:active {
+    background-color: #727272;
+    color: #0b0b0b;
+}
+
+.keyboard__button--operators {
+    background-color: #f69906;
+    color: #f6f6f6;
+}
+
+.keyboard__button--operators:active {
+    background-color: #d47704;
+    color: #d4d4d4;
+}
+
+.keyboard__button--numbers {
+    background-color: #313131;
+    color: #f6f6f6;
+}
+
+.keyboard__button--numbers:active {
+    background-color: #202020;
+    color: #d4d4d4;
+}
+
+.auto-correct-btn {
+    font-size: 32px;
+}
+
+.zero-btn {
+width: 188px;
+padding-right: 105px;
+}
+
+.bot-bar {
+    margin: 78px auto 18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bot-bar__plank {
+    width: 155px;
+    height: 5px;
+    border-radius: 3px;
+
+    background-color: #f5f5f5;
+}
