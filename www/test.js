@@ -1,5 +1,7 @@
 // Łatwiejszcze czyszczenie konsoli
 document.querySelector(".top-bar").addEventListener("click", ()=> {console.clear()});
+// dodanie konsoli do wszystkich przycisków
+
 
 // DODANIE ELEMENTów DOM DO JS
 // Dodanie przycisków jako stałych
@@ -51,14 +53,26 @@ twoButton.addEventListener("click", numbersFn);
 threeButton.addEventListener("click", numbersFn);
 zeroButton.addEventListener("click", numbersFn);
 dotButton.addEventListener("click", numbersFn);
+
+sevenButton.addEventListener("click", numbersFn);
+eightButton.addEventListener("click", numbersFn);
+nineButton.addEventListener("click", numbersFn);
+fourButton.addEventListener("click", numbersFn);
+fiveButton.addEventListener("click", numbersFn);
+sixButton.addEventListener("click", numbersFn);
+oneButton.addEventListener("click", numbersFn);
+twoButton.addEventListener("click", numbersFn);
+threeButton.addEventListener("click", numbersFn);
+zeroButton.addEventListener("click", numbersFn);
+dotButton.addEventListener("click", numbersFn);
 // Przypisanie wydarzeń dla konkretnych działań
 autoCorrectButton.addEventListener("click", autoCorrectFn);
 plusMinusButton.addEventListener("click", plusMinusFn);
 percentageButton.addEventListener("click", percentageFn);
-divisionButton.addEventListener("click", divisionFn);
-multiplicationButton.addEventListener("click", multiplicationFn);
-subtractionButton.addEventListener("click", subtractionFn);
-additionButton.addEventListener("click", additionFn);
+// divisionButton.addEventListener("click", divisionFn);
+// multiplicationButton.addEventListener("click", multiplicationFn);
+// subtractionButton.addEventListener("click", subtractionFn);
+// additionButton.addEventListener("click", additionFn);
 equationButton.addEventListener("click", equationFn);
 // nineButton.addEventListener("click", nineFn);
 // eightButton.addEventListener("click", eightFn);
@@ -75,13 +89,17 @@ equationButton.addEventListener("click", equationFn);
 
 //TESTY
 
-let currentNumber = null;
-let currentNumberArray = [];
-let shadowNumber = null;
+
+
 let currentNumberShadowArray = [];
-let currentNumberShadowArray2 = [];
+let currentNumberArray = [];
+
+let currentNumber = 0;
+let operator = null;
 let firstNumber = null;
 let secondNumber = null;
+
+let result = null;
 
 // FUNKCJE
 // Funkcja zmieniająca currentNumberArray na currentNumber
@@ -90,41 +108,92 @@ let secondNumber = null;
 function calcOptionsFn(){
     console.log("funkcja przycisków opcji kalkulatora");
 }
+// Przypisanie pierwszej liczby, poznanie operatora, przypisanie drugiej liczby, dokonanie równania
 function operatorsFn(){
-    console.log("funckja przycisków operacji");
+    // Oznaczenie liczb odnośnie aktualnie wpisanej liczby w kalkulatorze
+    operator = this.textContent;
+    if (firstNumber===null){
+        firstNumber = currentNumber;
+    } 
+    //Poznanie operatora
+    
+    
+    currentNumberArray = [];
+
+    console.clear();
+    console.log(currentNumber + " currentNumber");
+    console.log(firstNumber + " firstnumber");
+    console.log(secondNumber + " secondNumber");
+    console.log(result + " result");
 }
-function numbersFn() {
-    // STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
-    // Resetowanie, by każdorazowo na koniec wyświetlić właściwą liczbę
-    shadowNumber = 0;
-    currentNumberShadowArray = [];
-    // Wrzucenie do currentNumberArray liczby z przycisku
-    currentNumberArray.unshift(Number(this.textContent));
-    console.log("currentNumberArray");
-    console.log(currentNumberArray);
-    // Przy każdym kliknięciu liczby: przemiana currentNumberArray na shadowArray, która posiada wartości właściwe liczbom dla currentNumber
-    currentNumberArray.forEach(function(value, index){
-        currentNumberShadowArray.unshift(value*(10**index));
-    });
-    // console.log("currentNumberShadowArray");
-    // console.log(currentNumberShadowArray);
-    // Dodanie liczb z tabeli currentNumberShadowArray jako aktualny currentNumber
-    currentNumberShadowArray.forEach(function(value){
-        shadowNumber = shadowNumber + value;
-    });
-    currentNumber = shadowNumber;
-    console.log("currentNumber");
-    console.log(currentNumber);
-    
-    
+function equationFn(){
+        if (firstNumber === null){
+            return;
+        } else if (firstNumber != null){
+            secondNumber = currentNumber;
+        }
+
+        switch (operator){
+            case "/":
+                result = firstNumber/secondNumber;
+                break;
+            case "x":
+                result = firstNumber*secondNumber;
+                break;
+            case "-":
+                result = firstNumber-secondNumber;
+                break;
+            case "+":
+                result = firstNumber+secondNumber;
+                break;
+        }
+    // firstNumber = null;
+    // secondNumber = null;
 }
 
+// STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
+function numbersFn() {
+    // Resetowanie, by każdorazowo na koniec wyświetlić właściwą liczbę
+    let shadowNumber = 0;
+    let shadowArrayLessThanZero = [];
+    let shadowArrayMoreThanZero = [];
+    let shadowArrayLessThanZeroReverse = [];
+    // Wrzucenie do tablicy currentNumberArray liczb i kropki z przycisków
+    currentNumberArray.unshift(this.textContent);
+
+    if (currentNumberArray.includes(".")) {
+
+        shadowArrayLessThanZero = currentNumberArray.slice(0,currentNumberArray.indexOf("."));
+        shadowArrayMoreThanZero = currentNumberArray.slice(currentNumberArray.indexOf(".")+1, currentNumberArray.length);
+        dotButton.removeEventListener("click", numbersFn);
+    } else {
+        shadowArrayMoreThanZero = currentNumberArray.slice(0, currentNumberArray.length);
+    }
+    // Konwertowanie tablicy z liczbami i kropką na właściwą liczbę odpowiadającom chęci użytkownika na bieżąco
+    shadowArrayLessThanZero.forEach(function(value, index){
+        shadowArrayLessThanZeroReverse.unshift(value);
+    });
+    shadowArrayLessThanZeroReverse.forEach(function(value, index){
+        shadowArrayLessThanZeroReverse[index] = Number(value) / 10**(index+1);
+    });
+    shadowArrayMoreThanZero.forEach(function(value, index){
+        shadowArrayMoreThanZero[index] = Number(value) * 10**index;
+    });
+    shadowArrayMoreThanZero.forEach(function(value){
+        shadowNumber += value;
+    });
+    shadowArrayLessThanZeroReverse.forEach(function(value){
+        shadowNumber += value;
+    });
+    shadowNumber =shadowNumber.toFixed(shadowArrayLessThanZero.length);
+    currentNumber = Number(shadowNumber);
+}
 //Funkcje 2 stopnia
 // Opcje kalkulatora
 function autoCorrectFn(){
     console.log("Funkcja autokorekty");
     currentNumberArray = [];
-    currentNumber = null;
+    currentNumber = 0;
     firstNumber = null;
     secondNumber = null;
 
@@ -139,21 +208,19 @@ function percentageFn(){
 }
 
 // Operacje
-function divisionFn(){
-    console.log("Funkcja dzielenia");
-}
-function multiplicationFn(){
-    console.log("Funkcja mnozenia");
-}
-function subtractionFn(){
-    console.log("Funkcja odejmowania");
-}
-function additionFn(){
-    console.log("Funkcja dodawania");
-}
-function equationFn(){
-    console.log("Funkcja równości");
-}
+// function divisionFn(){
+//     console.log("Funkcja dzielenia");
+// }
+// function multiplicationFn(){
+//     console.log("Funkcja mnozenia");
+// }
+// function subtractionFn(){
+//     console.log("Funkcja odejmowania");
+// }
+// function additionFn(){
+//     console.log("Funkcja dodawania");
+// }
+
 
 // Liczby
 // function sevenFn(){
@@ -199,8 +266,13 @@ function equationFn(){
 // function dotFn(){
 //     console.log("Funkcja kropki");
 // }
-
-//Funkcje obliczeniowe
-
-//Funkcje wyświetlania
-//displayerMath i displayerResult
+for (button of allButtons){
+    button.addEventListener("click", ()=>{
+        console.clear();
+        console.log(currentNumber + " currentNumber");
+        console.log(firstNumber + " firstnumber");
+        console.log(operator + " operator");
+        console.log(secondNumber + " secondNumber");
+        console.log(result + " result");
+    });
+}
