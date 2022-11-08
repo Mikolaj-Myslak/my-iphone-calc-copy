@@ -56,66 +56,80 @@ autoCorrectButton.addEventListener("click", autoCorrectFn);
 plusMinusButton.addEventListener("click", plusMinusFn);
 percentageButton.addEventListener("click", percentageFn);
 divisionButton.addEventListener("click", divisionFn);
-// sevenButton.addEventListener("click", sevenFn);
-// eightButton.addEventListener("click", eightFn);
-// nineButton.addEventListener("click", nineFn);
 multiplicationButton.addEventListener("click", multiplicationFn);
-// fourButton.addEventListener("click", fourFn);
-// fiveButton.addEventListener("click", fiveFn);
-// sixButton.addEventListener("click", sixFn);
 subtractionButton.addEventListener("click", subtractionFn);
-// oneButton.addEventListener("click", oneFn);
-// twoButton.addEventListener("click", twoFn);
-// threeButton.addEventListener("click", threeFn)
 additionButton.addEventListener("click", additionFn);
+equationButton.addEventListener("click", equationFn);
+// nineButton.addEventListener("click", nineFn);
+// eightButton.addEventListener("click", eightFn);
+// sevenButton.addEventListener("click", sevenFn);
+// sixButton.addEventListener("click", sixFn);
+// fiveButton.addEventListener("click", fiveFn);
+// fourButton.addEventListener("click", fourFn);
+// threeButton.addEventListener("click", threeFn)
+// twoButton.addEventListener("click", twoFn);
+// oneButton.addEventListener("click", oneFn);
 // zeroButton.addEventListener("click", zeroFn);
 // dotButton.addEventListener("click", dotFn);
-equationButton.addEventListener("click", equationFn);
 
 
 //TESTY
-let currentNumberShadowArray = [];
-let currentNumberArray = [];
+
 let currentNumber = null;
+let currentNumberArray = [];
+let shadowNumber = null;
+let currentNumberShadowArray = [];
+let currentNumberShadowArray2 = [];
 let firstNumber = null;
 let secondNumber = null;
 
 // FUNKCJE
+// Funkcja zmieniająca currentNumberArray na currentNumber
+
 // Funkcje 1 stopnia
 function calcOptionsFn(){
     console.log("funkcja przycisków opcji kalkulatora");
 }
-function operatorsFn() {
+function operatorsFn(){
     console.log("funckja przycisków operacji");
 }
 function numbersFn() {
-    // Stworzenie aktualnie używanej liczby
-    currentNumber = 0;
+    // STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
+    // Resetowanie, by każdorazowo na koniec wyświetlić właściwą liczbę
+    shadowNumber = 0;
     currentNumberShadowArray = [];
-    // console.log(currentNumberArray.length);
+    // Wrzucenie do currentNumberArray liczby z przycisku
     currentNumberArray.unshift(Number(this.textContent));
+    console.log("currentNumberArray");
     console.log(currentNumberArray);
+    // Przy każdym kliknięciu liczby: przemiana currentNumberArray na shadowArray, która posiada wartości właściwe liczbom dla currentNumber
     currentNumberArray.forEach(function(value, index){
         currentNumberShadowArray.unshift(value*(10**index));
     });
-    // console.log(shadowArray);
+    // console.log("currentNumberShadowArray");
+    // console.log(currentNumberShadowArray);
+    // Dodanie liczb z tabeli currentNumberShadowArray jako aktualny currentNumber
     currentNumberShadowArray.forEach(function(value){
-        currentNumber = currentNumber + value;
+        shadowNumber = shadowNumber + value;
     });
-    // console.log(currentNumber);
-
-    displayerMath.textContent = currentNumber;
+    currentNumber = shadowNumber;
+    console.log("currentNumber");
+    console.log(currentNumber);
+    
+    
 }
 
 //Funkcje 2 stopnia
 // Opcje kalkulatora
 function autoCorrectFn(){
     console.log("Funkcja autokorekty");
-    displayerMath.textContent = "";
-    displayerResult.textContent = 0;
+    currentNumberArray = [];
     currentNumber = null;
     firstNumber = null;
     secondNumber = null;
+
+    displayerMath.textContent = "";
+    displayerResult.textContent = 0;
 }
 function plusMinusFn(){
     console.log("Funkcja plusaminusa");
