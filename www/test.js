@@ -26,7 +26,7 @@ const displayerResult = document.querySelector(".displayer__result");
 
 // PRZYPISANIE WYDARZEŃ PRZYCISKOM
 // Przypisanie wydarzeń związanych z kategorią przycisku
-// calcOptionFn
+// calcOptionFn - raczej do usunięcia funkcja
 autoCorrectButton.addEventListener("click", calcOptionsFn);
 plusMinusButton.addEventListener("click", calcOptionsFn);
 percentageButton.addEventListener("click", calcOptionsFn);
@@ -35,6 +35,7 @@ multiplicationButton.addEventListener("click", operatorsFn);
 subtractionButton.addEventListener("click", operatorsFn);
 divisionButton.addEventListener("click", operatorsFn);
 additionButton.addEventListener("click", operatorsFn);
+// equationFn
 equationButton.addEventListener("click", equationFn);
 // numbersFn
 sevenButton.addEventListener("click", numbersFn);
@@ -63,7 +64,6 @@ dotButton.addEventListener("click", numbersFn);
 autoCorrectButton.addEventListener("click", autoCorrectFn);
 plusMinusButton.addEventListener("click", plusMinusFn);
 percentageButton.addEventListener("click", percentageFn);
-
 // Ustawienie początkowe zmiennych kalkulatora
 let currentNumberArray = [];
 let currentNumber = 0;
@@ -71,69 +71,60 @@ let operator = null;
 let firstNumber = null;
 let secondNumber = null;
 let result = null;
+//---------------------------------------------------------------------------------------------
 
 // Funkcje przycisków opcji kalkulatora
 function calcOptionsFn(){
 }
+// Funkcja przycisku równości
+function equationFn(){
+    // Stan kalkulatora
+    if (firstNumber && operator && secondNumber && result){
+        firstNumber = result;
+    } else if (firstNumber && operator && secondNumber){
+
+    } else if (firstNumber && operator){
+        secondNumber = currentNumber;
+        resetCurrentNumber();
+    } else if (firstNumber){
+        operator = "=";
+    } else if (!firstNumber){
+        firstNumber = currentNumber;
+        resetCurrentNumber();
+        operator = "=";
+    }
+    makeResult();
+}
 // Funkcja przycisków +, - , x, /
 function operatorsFn(){
-    // Obsługa kalkulatora
-    if (firstNumber === null){
-        firstNumber = currentNumber;
-        currentNumberArray = [];
-        currentNumber = 0;
-    } else if (firstNumber!= null && secondNumber != null && result != null){
+    // Stan kalkulatora
+    if (firstNumber && operator && secondNumber && result){
         firstNumber = result;
+        resetResult();
         secondNumber = null;
-    }
-    // Ustawia aktualny operator
-    operator = this.textContent;
-}
-// Funkcja przycisku =
-function equationFn(){
-        // Obsługa kalkulatora
-        if(firstNumber===null && secondNumber != null){
+    } else if (firstNumber && operator && currentNumber === 0){
+        
+    } else if (firstNumber && operator){
+        secondNumber = currentNumber;
+        resetCurrentNumber();
+        makeResult();
+        firstNumber = result;
+        resetResult();
+        resetSecondNumber();
+    } else if (firstNumber){
+            currentNumber = firstNumber;
+            resetCurrentNumber();
+    } else if (!firstNumber){
             firstNumber = currentNumber;
-            currentNumberArray = [];
-            currentNumber = 0;
-        } else if (firstNumber === null && secondNumber === null){
-            return;
-        } else if (secondNumber === null){
-            secondNumber = currentNumber;
-            currentNumberArray = [];
-            currentNumber = 0;
-        } else if (firstNumber!= null && secondNumber != null && result != null){
-            firstNumber = result;
-        }
-       
-        //  Wylicza aktualny wynik
-        switch (operator){
-            case "/":
-                if(secondNumber===0){
-                    displayerMath.textContent = "";
-                    displayerResult.textContent = "error";
-                    break;
-                }
-                result = firstNumber/secondNumber;
-                break;
-            case "x":
-                result = firstNumber*secondNumber;
-                break;
-            case "-":
-                result = firstNumber-secondNumber;
-                break;
-            case "+":
-                result = firstNumber+secondNumber;
-                break;
-            }
+            resetCurrentNumber();
+    }
+    operator = this.textContent;
 }
 
 // STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
 function numbersFn() {
-    // Obsługa kalkulatora 
-    if (firstNumber!= null && secondNumber != null && result != null){
-        firstNumber = null;
-    }
+    // Stan kalkulatora
+    
     // Resetowanie zmiennych pomocniczych funkcji, by każdorazowo na koniec wyświetlić właściwą liczbę
     let shadowNumber = 0;
     let shadowArrayLessThanZero = [];
@@ -165,13 +156,11 @@ function numbersFn() {
     shadowArrayLessThanZeroReverse.forEach(function(value){
         shadowNumber += value;
     });
-    shadowNumber = shadowNumber.toFixed(shadowArrayLessThanZero.length);
-    currentNumber = Number(shadowNumber);
+    currentNumber = Number(shadowNumber.toFixed(shadowArrayLessThanZero.length));
 }
 // Funkcja przycisku AC
 function autoCorrectFn(){
-    currentNumberArray = [];
-    currentNumber = 0;
+    resetCurrentNumber();
     firstNumber = null;
     operator = null;
     secondNumber = null;
@@ -185,10 +174,74 @@ function plusMinusFn(){
 function percentageFn(){
     console.log("Funkcja procenta");
 }
-// TO DO
-function displayer(){
 
+// Funkcje pomocnicze
+function resetCurrentNumber(){
+    currentNumber = 0;
+    currentNumberArray = [];
+    dotButton.addEventListener("click", numbersFn);
 }
+function resetNumbersAndOperator(){
+    firstNumber = null;
+    operator = null;
+    secondNumber = null;
+}
+function resetSecondNumber(){
+    secondNumber = null;
+}
+function resetResult(){
+    result = null;
+}
+function makeResult(){
+    switch (operator){
+        case "/":
+            if(secondNumber===0){
+                displayerMath.textContent = "";
+                displayerResult.textContent = "error";
+                break;
+            }
+            result = firstNumber/secondNumber;
+            break;
+        case "x":
+            result = firstNumber*secondNumber;
+            break;
+        case "-":
+            result = firstNumber-secondNumber;
+            break;
+        case "+":
+            result = firstNumber+secondNumber;
+            break;
+        case "=":
+            result = firstNumber;
+            break;
+        }
+}
+
+// Funkcje wyświetlania
+function displayerMathFn(){
+    if (firstNumber === null && secondNumber === null && currentNumber === 0){
+        displayerMath.textContent = " ";
+    }
+
+    if (operator != null && result === null){
+        displayerMath.textContent = `${firstNumber} ${operator}`;
+    } else if (result != null){
+        displayerMath.textContent = `${firstNumber} ${operator} ${secondNumber}`;
+    }
+}
+
+function displayerResultFn(){
+    if (firstNumber === null && secondNumber === null && currentNumber === 0){
+        displayerResult.textContent = 0;
+    } else if (operator === null){
+        displayerResult.textContent = currentNumber;
+    } else if (firstNumber != null && operator != null && result ===null){
+        displayerResult.textContent = currentNumber;
+    } else if (result != null){
+        displayerResult.textContent = result;
+    }
+}
+
 
 // ----------------------------------------------------------------------
 
@@ -205,10 +258,13 @@ for (button of allButtons){
 
         console.log (`${firstNumber} ${operator} ${secondNumber} =`);
         console.log(`${result}`);
-        console.log("");
-        console.log("");
-        console.log("");
-        console.log (`firstNumber operator secondNumber =`);
-        console.log(`result`);
+        // console.log("");
+        // console.log("");
+        // console.log("");
+        // console.log (`firstNumber operator secondNumber =`);
+        // console.log(`result`);
+
+        // displayerMathFn();
+        // displayerResultFn();
     });
 }
