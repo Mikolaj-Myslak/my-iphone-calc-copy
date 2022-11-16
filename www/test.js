@@ -264,27 +264,31 @@ function doNegativeCurrentNumberArray(){
 
 // Funkcje wyświetlania
 function displayerMathFn(){
-    if (firstNumber === null && secondNumber === null && currentNumber === 0){
-        displayerMath.textContent = " ";
-    }
-
-    if (operator != null && result === null){
-        displayerMath.textContent = `${firstNumber} ${operator}`;
-    } else if (result != null){
-        displayerMath.textContent = `${firstNumber} ${operator} ${secondNumber}`;
-    }
+    if (firstNumber && operator && secondNumber && result){
+        displayerMath.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
+    } else if (firstNumber && operator && currentNumber != 0){
+        displayerMath.textContent = `${firstNumber} ${operator} `;
+    } else if (firstNumber && operator){
+        displayerMath.textContent = `${firstNumber} ${operator} `;
+    } else if (firstNumber){
+        
+    } else if (!firstNumber){
+        displayerMath.textContent = ` `;
+    } 
 }
 
 function displayerResultFn(){
-    if (firstNumber === null && secondNumber === null && currentNumber === 0){
-        displayerResult.textContent = 0;
-    } else if (operator === null){
-        displayerResult.textContent = currentNumber;
-    } else if (firstNumber != null && operator != null && result ===null){
-        displayerResult.textContent = currentNumber;
-    } else if (result != null){
-        displayerResult.textContent = result;
-    }
+    if (firstNumber && operator && secondNumber && result){
+        displayerResult.textContent = `${result}`;
+    } else if (firstNumber && operator && currentNumber != 0){
+        displayerResult.textContent = `${currentNumber}`;
+    } else if (firstNumber && operator){
+        displayerResult.textContent = `0`;
+    } else if (firstNumber){
+        
+    } else if (!firstNumber){
+        displayerResult.textContent = `${currentNumber}`;
+    } 
 }
 
 
@@ -310,7 +314,7 @@ for (button of allButtons){
         // console.log (`firstNumber operator secondNumber =`);
         // console.log(`result`);
 
-        // displayerMathFn();
-        // displayerResultFn();
+        displayerMathFn();
+        displayerResultFn();
     });
 }
