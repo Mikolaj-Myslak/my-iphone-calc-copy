@@ -23,7 +23,6 @@ const equationButton = allButtons[18];
 // Dodanie części wyświetlacza jako stałych
 const displayerMath = document.querySelector(".displayer__math");
 const displayerResult = document.querySelector(".displayer__result");
-
 // PRZYPISANIE WYDARZEŃ PRZYCISKOM
 // operatorsFn
 multiplicationButton.addEventListener("click", operatorsFn);
@@ -120,7 +119,6 @@ function operatorsFn(){
 
 // STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
 function numbersFn() {
-    
     //TWORZENIE currentNumber
     // Resetowanie zmiennych pomocniczych funkcji, by każdorazowo na koniec wyświetlić właściwą liczbę
     let shadowNumber = 0;
@@ -166,6 +164,7 @@ function numbersFn() {
 // Funkcja przycisku AC
 function autoCorrectFn(){
     resetCurrentNumber();
+    addingAllButtonsEventsWithoutAC();
     firstNumber = null;
     operator = null;
     secondNumber = null;
@@ -226,6 +225,7 @@ function makeResult(){
         case "/":
             if(secondNumber===0){
                 result = "error";
+                removingAllButtonsEventsWithoutAC();
                 break;
             }
             result = firstNumber/secondNumber;
@@ -251,6 +251,7 @@ function makeResultWithPercent(){
             resetCurrentNumber();
             if(secondNumber===0){
                 result = "error";
+                removingAllButtonsEventsWithoutAC();
                 break;
             }
             result = firstNumber/secondNumber;
@@ -282,6 +283,78 @@ function doNegativeCurrentNumberArray(){
         currentNumber = Math.abs(0-currentNumber);
      }
 }
+function removingAllButtonsEventsWithoutAC(){
+// operatorsFn
+multiplicationButton.removeEventListener("click", operatorsFn);
+subtractionButton.removeEventListener("click", operatorsFn);
+divisionButton.removeEventListener("click", operatorsFn);
+additionButton.removeEventListener("click", operatorsFn);
+// equationFn
+equationButton.removeEventListener("click", equationFn);
+// numbersFn
+sevenButton.removeEventListener("click", numbersFn);
+eightButton.removeEventListener("click", numbersFn);
+nineButton.removeEventListener("click", numbersFn);
+fourButton.removeEventListener("click", numbersFn);
+fiveButton.removeEventListener("click", numbersFn);
+sixButton.removeEventListener("click", numbersFn);
+oneButton.removeEventListener("click", numbersFn);
+twoButton.removeEventListener("click", numbersFn);
+threeButton.removeEventListener("click", numbersFn);
+zeroButton.removeEventListener("click", numbersFn);
+dotButton.removeEventListener("click", numbersFn);
+sevenButton.removeEventListener("click", numbersFn);
+eightButton.removeEventListener("click", numbersFn);
+nineButton.removeEventListener("click", numbersFn);
+fourButton.removeEventListener("click", numbersFn);
+fiveButton.removeEventListener("click", numbersFn);
+sixButton.removeEventListener("click", numbersFn);
+oneButton.removeEventListener("click", numbersFn);
+twoButton.removeEventListener("click", numbersFn);
+threeButton.removeEventListener("click", numbersFn);
+zeroButton.removeEventListener("click", numbersFn);
+dotButton.removeEventListener("click", numbersFn);
+// plusMinusFn i percentage Fn
+plusMinusButton.removeEventListener("click", plusMinusFn);
+percentageButton.removeEventListener("click", percentageFn);
+// Jedyny działający przycisk poniżej
+// autoCorrectButton.addEventListener("click", autoCorrectFn);
+}
+function addingAllButtonsEventsWithoutAC(){
+    // operatorsFn
+    multiplicationButton.addEventListener("click", operatorsFn);
+    subtractionButton.addEventListener("click", operatorsFn);
+    divisionButton.addEventListener("click", operatorsFn);
+    additionButton.addEventListener("click", operatorsFn);
+    // equationFn
+    equationButton.addEventListener("click", equationFn);
+    // numbersFn
+    sevenButton.addEventListener("click", numbersFn);
+    eightButton.addEventListener("click", numbersFn);
+    nineButton.addEventListener("click", numbersFn);
+    fourButton.addEventListener("click", numbersFn);
+    fiveButton.addEventListener("click", numbersFn);
+    sixButton.addEventListener("click", numbersFn);
+    oneButton.addEventListener("click", numbersFn);
+    twoButton.addEventListener("click", numbersFn);
+    threeButton.addEventListener("click", numbersFn);
+    zeroButton.addEventListener("click", numbersFn);
+    dotButton.addEventListener("click", numbersFn);
+    sevenButton.addEventListener("click", numbersFn);
+    eightButton.addEventListener("click", numbersFn);
+    nineButton.addEventListener("click", numbersFn);
+    fourButton.addEventListener("click", numbersFn);
+    fiveButton.addEventListener("click", numbersFn);
+    sixButton.addEventListener("click", numbersFn);
+    oneButton.addEventListener("click", numbersFn);
+    twoButton.addEventListener("click", numbersFn);
+    threeButton.addEventListener("click", numbersFn);
+    zeroButton.addEventListener("click", numbersFn);
+    dotButton.addEventListener("click", numbersFn);
+    // plusMinusFn i percentage Fn
+    plusMinusButton.addEventListener("click", plusMinusFn);
+    percentageButton.addEventListener("click", percentageFn);
+}
 
 // Funkcje wyświetlania
 function displayerMathFn(){
@@ -312,7 +385,10 @@ function displayerResultFn(){
     } 
 }
 
-
+// DO NAPRAWY
+//1 Błąd gdzie liczba po przecinku np. 0.501 wyświetla się jako 0.5099999999999999. ???
+//2 Odpowiednie działanie kalkulatora po dzieleniu przez 0 i wyświetleniu error
+//3 Dodać aktualny czas w kalkulatorze
 // ----------------------------------------------------------------------
 
 for (button of allButtons){
