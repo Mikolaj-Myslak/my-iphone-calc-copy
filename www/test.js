@@ -25,11 +25,6 @@ const displayerMath = document.querySelector(".displayer__math");
 const displayerResult = document.querySelector(".displayer__result");
 
 // PRZYPISANIE WYDARZEŃ PRZYCISKOM
-// Przypisanie wydarzeń związanych z kategorią przycisku
-// calcOptionFn - raczej do usunięcia funkcja
-autoCorrectButton.addEventListener("click", calcOptionsFn);
-plusMinusButton.addEventListener("click", calcOptionsFn);
-percentageButton.addEventListener("click", calcOptionsFn);
 // operatorsFn
 multiplicationButton.addEventListener("click", operatorsFn);
 subtractionButton.addEventListener("click", operatorsFn);
@@ -75,24 +70,22 @@ let result = null;
 let plusMinusState = 1;
 //---------------------------------------------------------------------------------------------
 
-// Funkcje przycisków opcji kalkulatora
-function calcOptionsFn(){
-}
+
 // Funkcja przycisku równości
 function equationFn(){
     // Stan kalkulatora
-    if (firstNumber && operator && secondNumber && result && currentNumber!=0){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null && currentNumber!=0){
         resetCurrentNumber();
-    } else if (firstNumber && operator && secondNumber && result){
+    } else if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         firstNumber = result;
-    } else if (firstNumber && operator && secondNumber){
+    } else if (firstNumber !==null && operator !==null && secondNumber !==null){
 
-    } else if (firstNumber && operator){
+    } else if (firstNumber !==null && operator !==null){
         secondNumber = currentNumber;
         resetCurrentNumber();
-    } else if (firstNumber){
+    } else if (firstNumber !==null){
         operator = "=";
-    } else if (!firstNumber){
+    } else if (firstNumber ===null){
         firstNumber = currentNumber;
         resetCurrentNumber();
         operator = "=";
@@ -102,23 +95,23 @@ function equationFn(){
 // Funkcja przycisków +, - , x, /
 function operatorsFn(){
     // Stan kalkulatora
-    if (firstNumber && operator && secondNumber && result){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         firstNumber = result;
         resetResult();
         secondNumber = null;
-    } else if (firstNumber && operator && currentNumber === 0){
+    } else if (firstNumber !==null && operator !==null && currentNumber === 0){
         
-    } else if (firstNumber && operator){
+    } else if (firstNumber !==null && operator !==null){
         secondNumber = currentNumber;
         resetCurrentNumber();
         makeResult();
         firstNumber = result;
         resetResult();
         resetSecondNumber();
-    } else if (firstNumber){
+    } else if (firstNumber !==null){
             currentNumber = firstNumber;
             resetCurrentNumber();
-    } else if (!firstNumber){
+    } else if (firstNumber ===null){
             firstNumber = currentNumber;
             resetCurrentNumber();
     }
@@ -166,7 +159,7 @@ function numbersFn() {
     // plusMinusState
     doNegativeCurrentNumberArray();
     // Stan kalkulatora
-    if (firstNumber && secondNumber && operator && result){
+    if (firstNumber !==null && secondNumber !==null && operator !==null && result !==null){
         firstNumber = currentNumber;
     }
 }
@@ -178,36 +171,34 @@ function autoCorrectFn(){
     secondNumber = null;
     result = null;
 }
-// TO DO
+// Funkcja przycisku plusminus
 function plusMinusFn(){
-    if (firstNumber && operator && secondNumber && result){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         result *= -1;
-    } else if (firstNumber && operator && currentNumber != 0){
+    } else if (firstNumber !==null && operator !==null && currentNumber != 0){
         plusMinusState *=-1;
         doNegativeCurrentNumberArray();
-    } else if (firstNumber && operator){
+    } else if (firstNumber !==null && operator !==null){
         firstNumber *= -1;
-    } else if (firstNumber){
+    } else if (firstNumber !==null){
         plusMinusState *=-1;
         doNegativeCurrentNumberArray();
-    } else if (!firstNumber){
+    } else if (firstNumber ===null){
         plusMinusState *=-1;
         doNegativeCurrentNumberArray();
     }
 }
 // TO DO
 function percentageFn(){
-    if (firstNumber && operator && secondNumber && result){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         
-    } else if (firstNumber && operator && currentNumber != 0){
-        secondNumber = currentNumber/100 * firstNumber;
-        makeResult();
-    } else if (firstNumber && operator){
-        secondNumber = firstNumber/100 * firstNumber;
-        makeResult();
-    } else if (firstNumber){
+    } else if (firstNumber !==null && operator !==null && currentNumber != 0){
+        makeResultWithPercent();
+    } else if (firstNumber !==null && operator !==null){
+        makeResultWithPercent();
+    } else if (firstNumber !==null){
         
-    } else if (!firstNumber){
+    } else if (firstNumber ===null){
         resetCurrentNumber();
     }
 }
@@ -234,8 +225,7 @@ function makeResult(){
     switch (operator){
         case "/":
             if(secondNumber===0){
-                displayerMath.textContent = "";
-                displayerResult.textContent = "error";
+                result = "error";
                 break;
             }
             result = firstNumber/secondNumber;
@@ -254,6 +244,37 @@ function makeResult(){
             break;
         }
 }
+function makeResultWithPercent(){
+    switch (operator){
+        case "/":
+            secondNumber = currentNumber/100;
+            resetCurrentNumber();
+            if(secondNumber===0){
+                result = "error";
+                break;
+            }
+            result = firstNumber/secondNumber;
+            break;
+        case "x":
+            secondNumber = currentNumber/100;
+            resetCurrentNumber();
+            result = firstNumber*secondNumber;
+            break;
+        case "-":
+            secondNumber = currentNumber/100*firstNumber;
+            resetCurrentNumber();
+            result = firstNumber-secondNumber;
+            break;
+        case "+":
+            secondNumber = currentNumber/100*firstNumber;
+            resetCurrentNumber();
+            result = firstNumber+secondNumber;
+            break;
+        case "=":
+            result = firstNumber;
+            break;
+        }
+}
 function doNegativeCurrentNumberArray(){
     if (plusMinusState === -1){
         currentNumber = Math.abs(0-currentNumber)*-1;
@@ -264,29 +285,29 @@ function doNegativeCurrentNumberArray(){
 
 // Funkcje wyświetlania
 function displayerMathFn(){
-    if (firstNumber && operator && secondNumber && result){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         displayerMath.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
-    } else if (firstNumber && operator && currentNumber != 0){
+    } else if (firstNumber !==null && operator !==null && currentNumber != 0){
         displayerMath.textContent = `${firstNumber} ${operator} `;
-    } else if (firstNumber && operator){
+    } else if (firstNumber !==null && operator !==null){
         displayerMath.textContent = `${firstNumber} ${operator} `;
-    } else if (firstNumber){
+    } else if (firstNumber !==null){
         
-    } else if (!firstNumber){
+    } else if (firstNumber ===null){
         displayerMath.textContent = ` `;
     } 
 }
 
 function displayerResultFn(){
-    if (firstNumber && operator && secondNumber && result){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         displayerResult.textContent = `${result}`;
-    } else if (firstNumber && operator && currentNumber != 0){
+    } else if (firstNumber !==null && operator !==null && currentNumber != 0){
         displayerResult.textContent = `${currentNumber}`;
-    } else if (firstNumber && operator){
+    } else if (firstNumber !==null && operator !==null){
         displayerResult.textContent = `0`;
-    } else if (firstNumber){
+    } else if (firstNumber !==null){
         
-    } else if (!firstNumber){
+    } else if (firstNumber ===null){
         displayerResult.textContent = `${currentNumber}`;
     } 
 }
@@ -298,16 +319,12 @@ for (button of allButtons){
     button.addEventListener("click", ()=>{
         console.clear();
         console.log("");
+        console.log(currentNumberArray);
         console.log(currentNumber + " = currentNumber");
         console.log("");
-        // console.log(firstNumber + " firstnumber");
-        // console.log(operator + " operator");
-        // console.log(secondNumber + " secondNumber");
-        // console.log(result + " result");
-
         console.log (`${firstNumber} ${operator} ${secondNumber} =`);
         console.log(`${result}`);
-        console.log(currentNumberArray);
+        console.log("");
         console.log(`plusMinus state to    ${plusMinusState}`);
         // console.log("");
         // console.log("");
