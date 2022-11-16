@@ -71,6 +71,8 @@ let operator = null;
 let firstNumber = null;
 let secondNumber = null;
 let result = null;
+
+let plusMinusState = 1;
 //---------------------------------------------------------------------------------------------
 
 // Funkcje przycisków opcji kalkulatora
@@ -79,7 +81,9 @@ function calcOptionsFn(){
 // Funkcja przycisku równości
 function equationFn(){
     // Stan kalkulatora
-    if (firstNumber && operator && secondNumber && result){
+    if (firstNumber && operator && secondNumber && result && currentNumber!=0){
+        resetCurrentNumber();
+    } else if (firstNumber && operator && secondNumber && result){
         firstNumber = result;
     } else if (firstNumber && operator && secondNumber){
 
@@ -123,8 +127,8 @@ function operatorsFn(){
 
 // STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
 function numbersFn() {
-    // Stan kalkulatora
     
+    //TWORZENIE currentNumber
     // Resetowanie zmiennych pomocniczych funkcji, by każdorazowo na koniec wyświetlić właściwą liczbę
     let shadowNumber = 0;
     let shadowArrayLessThanZero = [];
@@ -157,6 +161,14 @@ function numbersFn() {
         shadowNumber += value;
     });
     currentNumber = Number(shadowNumber.toFixed(shadowArrayLessThanZero.length));
+
+    // Obsługa 
+    // plusMinusState
+    doNegativeCurrentNumberArray();
+    // Stan kalkulatora
+    if (firstNumber && secondNumber && operator && result){
+        firstNumber = currentNumber;
+    }
 }
 // Funkcja przycisku AC
 function autoCorrectFn(){
@@ -168,11 +180,36 @@ function autoCorrectFn(){
 }
 // TO DO
 function plusMinusFn(){
-    console.log("Funkcja plusaminusa");
+    if (firstNumber && operator && secondNumber && result){
+        result *= -1;
+    } else if (firstNumber && operator && currentNumber != 0){
+        plusMinusState *=-1;
+        doNegativeCurrentNumberArray();
+    } else if (firstNumber && operator){
+        firstNumber *= -1;
+    } else if (firstNumber){
+        plusMinusState *=-1;
+        doNegativeCurrentNumberArray();
+    } else if (!firstNumber){
+        plusMinusState *=-1;
+        doNegativeCurrentNumberArray();
+    }
 }
 // TO DO
 function percentageFn(){
-    console.log("Funkcja procenta");
+    if (firstNumber && operator && secondNumber && result){
+        
+    } else if (firstNumber && operator && currentNumber != 0){
+        secondNumber = currentNumber/100 * firstNumber;
+        makeResult();
+    } else if (firstNumber && operator){
+        secondNumber = firstNumber/100 * firstNumber;
+        makeResult();
+    } else if (firstNumber){
+        
+    } else if (!firstNumber){
+        resetCurrentNumber();
+    }
 }
 
 // Funkcje pomocnicze
@@ -180,6 +217,7 @@ function resetCurrentNumber(){
     currentNumber = 0;
     currentNumberArray = [];
     dotButton.addEventListener("click", numbersFn);
+    plusMinusState = 1;
 }
 function resetNumbersAndOperator(){
     firstNumber = null;
@@ -215,6 +253,13 @@ function makeResult(){
             result = firstNumber;
             break;
         }
+}
+function doNegativeCurrentNumberArray(){
+    if (plusMinusState === -1){
+        currentNumber = Math.abs(0-currentNumber)*-1;
+     } else if (plusMinusState === 1){
+        currentNumber = Math.abs(0-currentNumber);
+     }
 }
 
 // Funkcje wyświetlania
@@ -258,7 +303,8 @@ for (button of allButtons){
 
         console.log (`${firstNumber} ${operator} ${secondNumber} =`);
         console.log(`${result}`);
-        // console.log("");
+        console.log(currentNumberArray);
+        console.log(`plusMinus state to    ${plusMinusState}`);
         // console.log("");
         // console.log("");
         // console.log (`firstNumber operator secondNumber =`);
