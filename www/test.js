@@ -218,7 +218,6 @@ function percentageFn(){
         resetCurrentNumber();
     }
 }
-
 // Funkcje pomocnicze
 function resetCurrentNumber(){
     currentNumber = 0;
@@ -318,22 +317,29 @@ function displayerMathFn(){
 
 function displayerResultFn(){
     if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null && firstNumber == currentNumber){
-        displayerResult.textContent = `${currentNumber}`;
+        displayerResult.textContent = `${everyCurrentNumberVisibleForUser()}`;
     }else if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         displayerResult.textContent = `${result}`;
     } else if (firstNumber !==null && operator !==null && currentNumber != 0){
-        displayerResult.textContent = `${currentNumber}`;
+        displayerResult.textContent = `${everyCurrentNumberVisibleForUser()}`;
     } else if (firstNumber !==null && operator !==null){
         displayerResult.textContent = `0`;
     } else if (firstNumber !==null){
         
     } else if (firstNumber ===null){
-        displayerResult.textContent = `${currentNumber}`;
+        displayerResult.textContent = `${everyCurrentNumberVisibleForUser()}`;
     } 
 }
 //Funkcje pomocnicze wyświetlania
+//Funkcja pomagająca wyświetlać liczby takie jak jak "0.000"
 function everyCurrentNumberVisibleForUser(){
+    let reverseCurrentNumberArray = [];
+    for (numb of currentNumberArray){
+        reverseCurrentNumberArray.unshift(numb);
+    }
 
+    let visibleCurrentNumber = reverseCurrentNumberArray.join("");
+    return visibleCurrentNumber;
 }
 //-----------------------------------------------------------------------
 //Zegar
@@ -353,7 +359,6 @@ showTime();
 // DO NAPRAWY
 //1 Błąd gdzie liczba po przecinku np. 0.501 wyświetla się jako 0.5099999999999999. ???
 //2 Poprawić CSS, żeby wyświetlał się prawidłowo przy zmianie rozdzielczości ekranu i na moblinych
-//3 Błąd gdzie wpisywany currentNumber 0.000 w momencie wpisywania wyświetla się cały czas jako 0, bo currentNumber === 0
 //-----------------------------------------------------------------------
 
 for (button of allButtons){
