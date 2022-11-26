@@ -72,6 +72,10 @@ let plusMinusState = 1;
 
 // Funkcja przycisku równości
 function equationFn(){
+    // Funkcja ma się nie wykonywać, gdy w kalkulatorze wypływa error
+    if (displayerResult.textContent === "error"){
+        return;
+    }
     // Stan kalkulatora
     if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null && currentNumber!=0){
         resetCurrentNumber();
@@ -93,6 +97,10 @@ function equationFn(){
 }
 // Funkcja przycisków +, - , x, /
 function operatorsFn(){
+    // Funkcja ma się nie wykonywać, gdy w kalkulatorze wypływa error
+    if (displayerResult.textContent === "error"){
+        return;
+    }
     // Stan kalkulatora
     if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         firstNumber = result;
@@ -119,7 +127,11 @@ function operatorsFn(){
 
 // STWORZENIE AKTUALNIE WYŚWIETLANEJ LICZBY
 function numbersFn() {
-    //TWORZENIE currentNumber
+    // Funkcja ma się nie wykonywać, gdy w kalkulatorze wypływa error
+    if (displayerResult.textContent === "error"){
+        return;
+    }
+    //Tworzenie currentNumber
     // Resetowanie zmiennych pomocniczych funkcji, by każdorazowo na koniec wyświetlić właściwą liczbę
     let shadowNumber = 0;
     let shadowArrayLessThanZero = [];
@@ -154,7 +166,7 @@ function numbersFn() {
     currentNumber = Number(shadowNumber.toFixed(shadowArrayLessThanZero.length));
 
     // Obsługa 
-    // plusMinusState
+    // plusMinusState, czyli czy w danej chwili jest minus przy liczbie
     doNegativeCurrentNumberArray();
     // Stan kalkulatora
     if (firstNumber !==null && secondNumber !==null && operator !==null && result !==null){
@@ -165,13 +177,14 @@ function numbersFn() {
 function autoCorrectFn(){
     resetCurrentNumber();
     addingAllButtonsEventsWithoutAC();
-    firstNumber = null;
-    operator = null;
-    secondNumber = null;
-    result = null;
+    resetNumbersAndOperator();
 }
 // Funkcja przycisku plusminus
 function plusMinusFn(){
+    // Funkcja ma się nie wykonywać, gdy w kalkulatorze wypływa error
+    if (displayerResult.textContent === "error"){
+        return;
+    }
     if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         result *= -1;
     } else if (firstNumber !==null && operator !==null && currentNumber != 0){
@@ -189,6 +202,10 @@ function plusMinusFn(){
 }
 // TO DO
 function percentageFn(){
+    // Funkcja ma się nie wykonywać, gdy w kalkulatorze wypływa error
+    if (displayerResult.textContent === "error"){
+        return;
+    }
     if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         
     } else if (firstNumber !==null && operator !==null && currentNumber != 0){
@@ -213,6 +230,7 @@ function resetNumbersAndOperator(){
     firstNumber = null;
     operator = null;
     secondNumber = null;
+    result = null;
 }
 function resetSecondNumber(){
     secondNumber = null;
@@ -225,7 +243,6 @@ function makeResult(){
         case "/":
             if(secondNumber===0){
                 result = "error";
-                removingAllButtonsEventsWithoutAC();
                 break;
             }
             result = firstNumber/secondNumber;
@@ -251,7 +268,6 @@ function makeResultWithPercent(){
             resetCurrentNumber();
             if(secondNumber===0){
                 result = "error";
-                removingAllButtonsEventsWithoutAC();
                 break;
             }
             result = firstNumber/secondNumber;
@@ -282,43 +298,6 @@ function doNegativeCurrentNumberArray(){
      } else if (plusMinusState === 1){
         currentNumber = Math.abs(0-currentNumber);
      }
-}
-function removingAllButtonsEventsWithoutAC(){
-// operatorsFn
-multiplicationButton.removeEventListener("click", operatorsFn);
-subtractionButton.removeEventListener("click", operatorsFn);
-divisionButton.removeEventListener("click", operatorsFn);
-additionButton.removeEventListener("click", operatorsFn);
-// equationFn
-equationButton.removeEventListener("click", equationFn);
-// numbersFn
-sevenButton.removeEventListener("click", numbersFn);
-eightButton.removeEventListener("click", numbersFn);
-nineButton.removeEventListener("click", numbersFn);
-fourButton.removeEventListener("click", numbersFn);
-fiveButton.removeEventListener("click", numbersFn);
-sixButton.removeEventListener("click", numbersFn);
-oneButton.removeEventListener("click", numbersFn);
-twoButton.removeEventListener("click", numbersFn);
-threeButton.removeEventListener("click", numbersFn);
-zeroButton.removeEventListener("click", numbersFn);
-dotButton.removeEventListener("click", numbersFn);
-sevenButton.removeEventListener("click", numbersFn);
-eightButton.removeEventListener("click", numbersFn);
-nineButton.removeEventListener("click", numbersFn);
-fourButton.removeEventListener("click", numbersFn);
-fiveButton.removeEventListener("click", numbersFn);
-sixButton.removeEventListener("click", numbersFn);
-oneButton.removeEventListener("click", numbersFn);
-twoButton.removeEventListener("click", numbersFn);
-threeButton.removeEventListener("click", numbersFn);
-zeroButton.removeEventListener("click", numbersFn);
-dotButton.removeEventListener("click", numbersFn);
-// plusMinusFn i percentage Fn
-plusMinusButton.removeEventListener("click", plusMinusFn);
-percentageButton.removeEventListener("click", percentageFn);
-// Jedyny działający przycisk poniżej
-// autoCorrectButton.addEventListener("click", autoCorrectFn);
 }
 function addingAllButtonsEventsWithoutAC(){
     // operatorsFn
@@ -355,7 +334,11 @@ function addingAllButtonsEventsWithoutAC(){
     plusMinusButton.addEventListener("click", plusMinusFn);
     percentageButton.addEventListener("click", percentageFn);
 }
-
+function isFloatingPointNumber(numb){
+    if (numb%1 !== 0 ){
+        console.log("liczba nie jest całkowita")
+    }
+}
 // Funkcje wyświetlania
 function displayerMathFn(){
     if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
@@ -387,8 +370,8 @@ function displayerResultFn(){
 
 // DO NAPRAWY
 //1 Błąd gdzie liczba po przecinku np. 0.501 wyświetla się jako 0.5099999999999999. ???
-//2 Odpowiednie działanie kalkulatora po dzieleniu przez 0 i wyświetleniu error
-//3 Dodać aktualny czas w kalkulatorze
+//2 Dodać aktualny czas w kalkulatorze
+//3 Poprawić CSS, żeby wyświetlał się prawidłowo przy zmianie rozdzielczości ekranu i na moblinych
 // ----------------------------------------------------------------------
 
 for (button of allButtons){
@@ -402,12 +385,11 @@ for (button of allButtons){
         console.log(`${result}`);
         console.log("");
         console.log(`plusMinus state to    ${plusMinusState}`);
-        // console.log("");
-        // console.log("");
-        // console.log (`firstNumber operator secondNumber =`);
-        // console.log(`result`);
-
+        
         displayerMathFn();
         displayerResultFn();
     });
 }
+
+const now = new Date();
+let currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
