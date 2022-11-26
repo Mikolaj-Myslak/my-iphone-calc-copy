@@ -341,7 +341,9 @@ function isFloatingPointNumber(numb){
 }
 // Funkcje wyświetlania
 function displayerMathFn(){
-    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null && firstNumber == currentNumber){
+        displayerMath.textContent = `${result} ${operator} ${secondNumber} =`;
+    }else if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         displayerMath.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
     } else if (firstNumber !==null && operator !==null && currentNumber != 0){
         displayerMath.textContent = `${firstNumber} ${operator} `;
@@ -355,7 +357,9 @@ function displayerMathFn(){
 }
 
 function displayerResultFn(){
-    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
+    if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null && firstNumber == currentNumber){
+        displayerResult.textContent = `${currentNumber}`;
+    }else if (firstNumber !==null && operator !==null && secondNumber !==null && result !==null){
         displayerResult.textContent = `${result}`;
     } else if (firstNumber !==null && operator !==null && currentNumber != 0){
         displayerResult.textContent = `${currentNumber}`;
@@ -372,6 +376,7 @@ function displayerResultFn(){
 //1 Błąd gdzie liczba po przecinku np. 0.501 wyświetla się jako 0.5099999999999999. ???
 //2 Dodać aktualny czas w kalkulatorze
 //3 Poprawić CSS, żeby wyświetlał się prawidłowo przy zmianie rozdzielczości ekranu i na moblinych
+// Poprawić 
 // ----------------------------------------------------------------------
 
 for (button of allButtons){
