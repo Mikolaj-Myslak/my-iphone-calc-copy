@@ -371,12 +371,24 @@ function displayerResultFn(){
         displayerResult.textContent = `${currentNumber}`;
     } 
 }
+//-----------------------------------------------------------------------
+//Stworzenie zegara
+const clock = document.querySelector(".top-bar__timer");
+function showTime(){
+    const now = new Date();
+    let h = now.getHours().toString().padStart(2,"0");
+    let m = now.getMinutes().toString().padStart(2,"0");
+    let s = now.getSeconds().toString().padStart(2,"0");
 
+    let time = `${h}:${m}`;
+    clock.textContent = time;
+    setTimeout(showTime, 10000);
+}
+showTime();
 // DO NAPRAWY
 //1 Błąd gdzie liczba po przecinku np. 0.501 wyświetla się jako 0.5099999999999999. ???
 //2 Dodać aktualny czas w kalkulatorze
 //3 Poprawić CSS, żeby wyświetlał się prawidłowo przy zmianie rozdzielczości ekranu i na moblinych
-// Poprawić 
 // ----------------------------------------------------------------------
 
 for (button of allButtons){
@@ -396,5 +408,3 @@ for (button of allButtons){
     });
 }
 
-const now = new Date();
-let currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
